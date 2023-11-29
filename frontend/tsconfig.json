@@ -9,6 +9,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -25,7 +26,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "src",
+    "./setupTests.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json"}]
 }
