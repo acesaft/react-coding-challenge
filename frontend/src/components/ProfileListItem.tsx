@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useDeleteProfileMutation } from '@/store/api.ts';
 import { Profile } from '@/types.ts';
@@ -14,7 +15,7 @@ const ProfileListItem: FC<Props> = ({ profile }) => {
 
   return (
     <li key={profile.id}>
-      {profile.name}
+      <Link to={`profile/${profile.id}`}>{profile.name}</Link>
       <button
         disabled={isLoading}
         onClick={() => deleteProfileMutation(profile.id)}
