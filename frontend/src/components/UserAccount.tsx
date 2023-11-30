@@ -1,11 +1,11 @@
-import { selectUserAccountCounts, useGetUserAccountQuery } from '@/store/userAccountApi';
+import { selectUserAccountCounts, useGetUserAccountQuery } from '@/store/api.ts';
 import { useAppSelector } from '@/utils/hooks';
 
 const UserAccount = () => {
-  const { isLoading, isError, data } = useGetUserAccountQuery();
+  const { isLoading, isFetching, isError, data } = useGetUserAccountQuery();
   const { profileCount, personCount, addressCount, paymentCount, meterCount } = useAppSelector(selectUserAccountCounts);
 
-  if (isLoading) return <div>... loading user account</div>;
+  if (isLoading || isFetching) return <div>... loading user account</div>;
   if (isError) return <div>Something went wrong loading the user account!</div>;
 
   return (

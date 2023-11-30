@@ -1,22 +1,38 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { UserAccount } from '@/types';
+import type { Profile, UserAccount } from '@/types';
 
-export const userAccountApi = createApi({
-  reducerPath: 'userAccountApi',
+export const api = createApi({
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_USER_ACCOUNT_BACKEND_URL }),
+  tagTypes: ['Profile', 'UserAccount'],
   endpoints: (builder) => ({
     getUserAccount: builder.query<UserAccount, void>({
       query: () => `/`,
+      providesTags: ['UserAccount'],
+    }),
+    getProfiles: builder.query<Profile[], void>({
+      query: () => `/profiles`,
+      providesTags: (result) =>
+        result
+          ? [...result.map(({ id }) => ({ type: 'Profile' as const, id })), { type: 'Profile', id: 'LIST' }]
+          : [{ type: 'Profile', id: 'LIST' }],
+    }),
+    deleteProfile: builder.mutation<Profile, string>({
+      query: (id) => ({
+        url: `/profiles/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, arg) => [{ type: 'Profile', id: arg }, 'UserAccount'],
     }),
   }),
 });
 
-export const { useGetUserAccountQuery } = userAccountApi;
+export const { useGetUserAccountQuery, useGetProfilesQuery, useDeleteProfileMutation } = api;
 
 export const selectUserAccountCounts = createSelector(
-  userAccountApi.endpoints.getUserAccount.select(),
+  api.endpoints.getUserAccount.select(),
   ({ data: userAccount }) => {
     return {
       profileCount: userAccount?.profiles?.length ?? 0,
@@ -30,9 +46,4 @@ export const selectUserAccountCounts = createSelector(
         ) ?? 0,
     };
   },
-);
-
-export const selectUserAccountProfiles = createSelector(
-  userAccountApi.endpoints.getUserAccount.select(),
-  ({ data: userAccount }) => userAccount?.profiles || [],
 );

@@ -4,7 +4,7 @@ import { expect, afterEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 
 import { store } from '@/store/store.ts';
-import { userAccountApi } from '@/store/userAccountApi.ts';
+import { api } from '@/store/api.ts';
 import { server } from '@/test/server.ts';
 
 expect.extend(matchers);
@@ -15,7 +15,7 @@ beforeAll(() => {
 
 afterEach(() => {
   server.resetHandlers();
-  store.dispatch(userAccountApi.util.resetApiState());
+  store.dispatch(api.util.resetApiState());
 });
 
 afterAll(() => server.close());
