@@ -1,3 +1,6 @@
+# Demo
+![Demo](example.gif)
+
 # Getting started
 1) Navigate to the `backend` folder and follow its readme instructions
 2) Navigate to the `frontend` folder and follow its instructions

@@ -2,13 +2,17 @@
 
 If you have just cloned this project, install all necessary dependencies:
 
-### `npm install`
+### `yarn install`
 
 Then, the frontend can be started with the following command:
 
-### `npm run dev`
+### `yarn run dev`
 
 And voilá, the frontend should now be up and running.
+
+### `yarn run test`
+
+to run the tests.
 
 ---
 
