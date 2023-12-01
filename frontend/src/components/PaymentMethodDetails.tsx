@@ -1,6 +1,11 @@
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
 
+import ErrorMessage from '@/components/ErrorMessage.tsx';
 import { useGetPaymentMethodQuery } from '@/store/api.ts';
+import ItemLoader from '@/components/ItemLoader.tsx';
+import List from '@/components/List.tsx';
 
 const PaymentMethodDetails = () => {
   const { profileId, paymentMethodId } = useParams();
@@ -13,16 +18,21 @@ const PaymentMethodDetails = () => {
     paymentMethodId: paymentMethodId as string,
   });
 
-  if (isLoading) return <div>... loading payment method</div>;
-  if (isError) return <div>Something went wrong loading the payment method!</div>;
+  if (isError) return <ErrorMessage>Something went wrong loading the payment method!</ErrorMessage>;
 
   return (
-    <section>
-      <div>Name: {paymentMethod?.name}</div>
-      <div>IBAN: {paymentMethod?.iban}</div>
-      <div>bic: {paymentMethod?.bic}</div>
-      {paymentMethod?.isPrimary && <div>Primary</div>}
-    </section>
+    <List headerText="Payment Method" isLoading={isLoading} loadingCount={0}>
+      <Typography variant="body1" noWrap>
+        <strong>Name:</strong> <ItemLoader isLoading={isLoading} value={paymentMethod?.name} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>IBAN:</strong> <ItemLoader isLoading={isLoading} value={paymentMethod?.iban} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Bic:</strong> <ItemLoader isLoading={isLoading} value={paymentMethod?.bic} />
+      </Typography>
+      <>{paymentMethod?.isPrimary && <Chip sx={{ mt: 1, mr: 1 }} label="Primary" />}</>
+    </List>
   );
 };
 

@@ -1,7 +1,11 @@
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
 
-import { useGetPersonQuery } from '@/store/api.ts';
-import { formatDate } from '@/utils/common.ts';
+import List from '@/components/List';
+import ItemLoader from '@/components/ItemLoader';
+import { useGetPersonQuery } from '@/store/api';
+import { formatDate } from '@/utils/common';
 
 const ProfileDetails = () => {
   const { profileId, personId } = useParams();
@@ -14,18 +18,27 @@ const ProfileDetails = () => {
     personId: personId as string,
   });
 
-  if (isLoading) return <div>... loading person</div>;
   if (isError) return <div>Something went wrong loading the person!</div>;
 
   return (
-    <section>
-      <div>Salutation: {person?.salutation}</div>
-      <div>First Name: {person?.firstName}</div>
-      <div>Last Name: {person?.lastName}</div>
-      <div>Occupation: {person?.occupation}</div>
-      <div>Birth Date: {formatDate(person?.birthdate)}</div>
-      {person?.isPrimary && <div>Primary</div>}
-    </section>
+    <List headerText="Person" isLoading={isLoading} loadingCount={0}>
+      <Typography variant="body1" noWrap>
+        <strong>Salutation:</strong> <ItemLoader isLoading={isLoading} value={person?.salutation} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>First Name:</strong> <ItemLoader isLoading={isLoading} value={person?.firstName} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Last Name:</strong> <ItemLoader isLoading={isLoading} value={person?.lastName} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Occupation:</strong> <ItemLoader isLoading={isLoading} value={person?.occupation} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Birth Date:</strong> <ItemLoader isLoading={isLoading} value={formatDate(person?.birthdate)} />
+      </Typography>
+      <>{person?.isPrimary && <Chip sx={{ mt: 1, mr: 1 }} label="Primary" />}</>
+    </List>
   );
 };
 

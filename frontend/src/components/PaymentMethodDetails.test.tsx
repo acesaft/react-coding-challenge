@@ -13,11 +13,14 @@ describe('PaymentMethodDetails', () => {
     const mockData = mockPaymentMethods[0];
 
     renderWithProviders(<PaymentMethodDetails />, { store });
-    expect(screen.getByText('loading payment method', { exact: false })).toBeInTheDocument();
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(3);
     await waitFor(() => {
-      expect(screen.getByText(`Name: ${mockData.name}`, { exact: false })).toBeInTheDocument();
-      expect(screen.getByText(`IBAN: ${mockData.iban}`, { exact: false })).toBeInTheDocument();
-      expect(screen.getByText(`bic: ${mockData.bic}`, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(`Name:`, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(mockData.name, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(`IBAN:`, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(mockData.iban, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(`Bic:`, { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(mockData.bic, { exact: false })).toBeInTheDocument();
       expect(screen.getByText(`Primary`, { exact: false })).toBeInTheDocument();
     });
   });
@@ -35,6 +38,7 @@ describe('PaymentMethodDetails', () => {
     );
 
     renderWithProviders(<PaymentMethodDetails />, { store });
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(3);
     await waitFor(() => {
       expect(
         screen.getByText('Something went wrong loading the payment method!', { exact: false }),

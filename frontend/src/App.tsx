@@ -1,3 +1,4 @@
+import Container from '@mui/material/Container';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import AddressDetails from '@/components/AddressDetails.tsx';
@@ -9,7 +10,7 @@ import UserAccount from '@/components/UserAccount.tsx';
 
 export const App = () => {
   return (
-    <main style={{ display: 'grid', placeItems: 'center', fontFamily: 'helvetica' }}>
+    <Container maxWidth={false} sx={{ p: 1, maxWidth: 700 }}>
       <UserAccount />
       <BrowserRouter>
         <Routes>
@@ -20,6 +21,6 @@ export const App = () => {
           <Route path="/profile/:profileId/payment-method/:paymentMethodId" element={<PaymentMethodDetails />} />
         </Routes>
       </BrowserRouter>
-    </main>
+    </Container>
   );
 };

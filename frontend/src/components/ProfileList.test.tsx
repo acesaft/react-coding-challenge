@@ -2,17 +2,17 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
 import ProfileList from '@/components/ProfileList';
-import { setupStore } from '@/store/store.ts';
-import { renderWithProviders } from '@/test/testUtils.tsx';
-import { server } from '@/test/server.ts';
-import { mockData, mockProfile } from '@/test/mockData.ts';
+import { setupStore } from '@/store/store';
+import { renderWithProviders } from '@/test/testUtils';
+import { server } from '@/test/server';
+import { mockData, mockProfile } from '@/test/mockData';
 
 describe('UserAccount', () => {
   test('it renders a loading message and the profiles details once fetching the profiles resolves', async () => {
     const store = setupStore();
 
     renderWithProviders(<ProfileList />, { store });
-    expect(screen.getByText('loading profiles', { exact: false })).toBeInTheDocument();
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(3);
     await waitFor(() => {
       mockData.profiles?.forEach((profile) => {
         expect(screen.getByText(profile.name, { exact: false })).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('UserAccount', () => {
     );
 
     renderWithProviders(<ProfileList />, { store });
-    expect(screen.getByText('loading profiles', { exact: false })).toBeInTheDocument();
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(3);
     await waitFor(() => {
       expect(screen.getByText('Something went wrong loading the profiles!', { exact: false })).toBeInTheDocument();
     });

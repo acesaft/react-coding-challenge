@@ -13,7 +13,7 @@ describe('ProfileDetails', () => {
     const store = setupStore();
 
     renderWithProviders(<ProfileDetails />, { store });
-    expect(screen.getByText('loading profile', { exact: false })).toBeInTheDocument();
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(6);
     await waitFor(() => {
       expect(screen.getByText('Persons', { exact: false })).toBeInTheDocument();
       mockProfile.persons.forEach((person) => {
@@ -40,6 +40,7 @@ describe('ProfileDetails', () => {
     );
 
     renderWithProviders(<ProfileDetails />, { store });
+    expect(screen.queryAllByText('loading', { exact: false })).toHaveLength(6);
     await waitFor(() => {
       expect(screen.getByText('Something went wrong loading the profile!', { exact: false })).toBeInTheDocument();
     });

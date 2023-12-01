@@ -3,7 +3,7 @@ import ContentLoader from 'react-content-loader';
 
 interface Props {
   isLoading: boolean;
-  value: string | number | undefined;
+  value?: string | number | undefined;
 }
 
 const ItemLoader: FC<Props> = ({ isLoading, value }) => {

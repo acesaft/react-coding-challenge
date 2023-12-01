@@ -1,6 +1,11 @@
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
 
-import { useGetAddressQuery } from '@/store/api.ts';
+import { useGetAddressQuery } from '@/store/api';
+import ItemLoader from '@/components/ItemLoader';
+import ErrorMessage from '@/components/ErrorMessage';
+import List from '@/components/List';
 
 const AddressDetails = () => {
   const { profileId, addressId } = useParams();
@@ -13,20 +18,29 @@ const AddressDetails = () => {
     addressId: addressId as string,
   });
 
-  if (isLoading) return <div>... loading address</div>;
-  if (isError) return <div>Something went wrong loading the address!</div>;
+  if (isError) return <ErrorMessage>Something went wrong loading the address!</ErrorMessage>;
 
   return (
-    <section>
-      <div>Name: {address?.name}</div>
-      <div>Postal Code: {address?.postalCode}</div>
-      <div>City: {address?.city}</div>
-      <div>Street: {address?.street}</div>
-      <div>House Number: {address?.houseNumber}</div>
-      {address?.isPrimaryMailing && <div>Primary Mailing Address</div>}
-      {address?.isPrimaryBilling && <div>Primary Billing Address</div>}
-      {address?.isPrimaryShipping && <div>Primary Shipping Address</div>}
-    </section>
+    <List headerText="Address" isLoading={isLoading} loadingCount={0}>
+      <Typography variant="body1" noWrap>
+        <strong>Name:</strong> <ItemLoader isLoading={isLoading} value={address?.name} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Postal Code:</strong> <ItemLoader isLoading={isLoading} value={address?.postalCode} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>City:</strong> <ItemLoader isLoading={isLoading} value={address?.city} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>Street:</strong> <ItemLoader isLoading={isLoading} value={address?.street} />
+      </Typography>
+      <Typography variant="body1" noWrap>
+        <strong>House Number:</strong> <ItemLoader isLoading={isLoading} value={address?.houseNumber} />
+      </Typography>
+      <>{address?.isPrimaryMailing && <Chip sx={{ mt: 1, mr: 1 }} label="Primary Mailing Address" />}</>
+      <>{address?.isPrimaryBilling && <Chip sx={{ mt: 1, mr: 1 }} label="Primary Billing Address" />}</>
+      <>{address?.isPrimaryShipping && <Chip sx={{ mt: 1, mr: 1 }} label="Primary Shipping Address" />}</>
+    </List>
   );
 };
 
